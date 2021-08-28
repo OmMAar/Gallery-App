@@ -55,6 +55,10 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
+    // _emailEditingController.text= "Omar.alshyokh@gmail.com";
+    // _passwordEditingController.text ="12345678";
+    // _email = "Omar.alshyokh@gmail.com";
+    // _password = "12345678";
   }
 
   @override

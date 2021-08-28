@@ -1,15 +1,10 @@
 import 'package:nabed_test/data/local/constants/db_constants.dart';
 import 'package:nabed_test/data/local/db/base/base_database.dart';
 import 'package:nabed_test/models/user/user_model.dart';
-import 'package:sqflite/sqflite.dart';
-
 
 class UserDatabase {
-
-
   // database instance
   final BaseDatabase _db;
-
 
   // Constructor
   UserDatabase(this._db);
@@ -22,15 +17,15 @@ class UserDatabase {
     return user.copy(id: id);
   }
 
-
-  Future<UserModel?> accountExists({required String email,required String password}) async {
+  Future<UserModel?> accountExists(
+      {required String email, required String password}) async {
     final db = await _db.database;
 
     var res = await db.rawQuery(
         "SELECT * FROM ${DBConstants.TABLE_LIST_OF_USERS} WHERE ${UserFields.email} = '$email' and ${UserFields.password} = '$password'");
 
     if (res.length > 0) {
-      return  UserModel.fromJson(res.first);
+      return UserModel.fromJson(res.first);
     }
 
     return null;
@@ -58,7 +53,8 @@ class UserDatabase {
 
     final orderBy = '${UserFields.fullName} ASC';
 
-    final result = await db.query(DBConstants.TABLE_LIST_OF_USERS, orderBy: orderBy);
+    final result =
+        await db.query(DBConstants.TABLE_LIST_OF_USERS, orderBy: orderBy);
 
     return result.map((json) => UserModel.fromJson(json)).toList();
   }

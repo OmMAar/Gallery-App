@@ -137,8 +137,7 @@ class CustomErrorWidget extends StatelessWidget {
   const CustomErrorWidget({
     Key? key,
     required this.message,
-  })   : assert(message != null),
-        super(key: key);
+  }): super(key: key);
 
   @override
   Widget build(BuildContext context) {

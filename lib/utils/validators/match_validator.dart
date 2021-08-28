@@ -5,7 +5,7 @@ import 'base_validator.dart';
 class MatchValidator extends BaseValidator {
   String value;
 
-  MatchValidator({required this.value}) : assert(value != null);
+  MatchValidator({required this.value});
 
   @override
   String getMessage(BuildContext? context) {

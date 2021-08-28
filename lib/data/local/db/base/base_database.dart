@@ -1,14 +1,11 @@
 import 'package:nabed_test/data/local/constants/db_constants.dart';
-import 'package:nabed_test/models/gallery/hits_local_model.dart';
+import 'package:nabed_test/models/gallery/gallery_model.dart';
 import 'package:nabed_test/models/user/user_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class BaseDatabase {
-  //final BaseDatabase instance = BaseDatabase._init();
-
   Database? _database;
-
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -17,7 +14,7 @@ class BaseDatabase {
     return _database!;
   }
 
-   Future<Database> _initDB(String filePath) async {
+  Future<Database> _initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
@@ -43,8 +40,7 @@ CREATE TABLE ${DBConstants.TABLE_LIST_OF_USERS} (
 
     await db.execute('''
 CREATE TABLE ${DBConstants.TABLE_LIST_OF_ITEM} ( 
-  ${ItemFields.id} $idType, 
-  ${ItemFields.mainId} $integerType, 
+  ${ItemFields.id} $integerType, 
   ${ItemFields.pageURL} $textType,
   ${ItemFields.type} $textType,
   ${ItemFields.tags} $textType,
@@ -69,7 +65,6 @@ CREATE TABLE ${DBConstants.TABLE_LIST_OF_ITEM} (
   )
 ''');
   }
-
 
   Future close() async {
     final db = await database;

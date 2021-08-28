@@ -1,70 +1,79 @@
 import 'dart:async';
+
 import 'package:nabed_test/data/local/db/user/user_database.dart';
-import 'package:nabed_test/data/network/dashboard/dashboard_api.dart';
 import 'package:nabed_test/data/sharedpref/shared_preference_helper.dart';
-import 'package:nabed_test/models/dashboard/dashboard_model.dart';
 import 'package:nabed_test/models/gallery/gallery_model.dart';
 import 'package:nabed_test/models/user/user_model.dart';
-import 'local/datasources/dashboard/dashboard_datasource.dart';
+
+import 'local/db/items/item_database.dart';
 import 'network/gallery/gallery_api.dart';
 
 class Repository {
   // data source object
-  final DashboardDataSource _dashboardDataSource;
-
-  // data source object
   final UserDatabase _userDatabase;
+  final ItemDatabase _itemDatabase;
 
   // api objects
-  final DashboardApi _dashboardApi;
+  final GalleryApi _galleryApi;
 
   // shared pref object
   final SharedPreferenceHelper _sharedPrefsHelper;
 
-  final GalleryApi _galleryApi;
-
   // constructor
-  Repository(this._dashboardApi, this._sharedPrefsHelper, this._dashboardDataSource, this._userDatabase,this._galleryApi);
+  Repository(this._sharedPrefsHelper, this._userDatabase, this._galleryApi,
+      this._itemDatabase);
 
-  // weather: ---------------------------------------------------------------------
+  // gallery: ---------------------------------------------------------------------
 
-  Future<DashboardModel> getDashboardInfo() async {
+  Future<List<HitsModel>> getGalleryItems(
+      {required int page, required int pageSize, required String key}) async {
+    List<HitsModel> result = [];
 
-
-   var _weatherInfo = await _dashboardApi.getDashboardInfo();
-    return _weatherInfo;
+    int? dataBaseCount = await _itemDatabase.getCount();
+    print("database count :$dataBaseCount");
+    if (dataBaseCount != null && dataBaseCount < (pageSize * page)) {
+      var _weatherInfo = await _galleryApi.getGalleryInfo(
+          page: page, pageSize: pageSize, key: key);
+      if (_weatherInfo.hits != null && _weatherInfo.hits!.isNotEmpty) {
+        for (HitsModel e in _weatherInfo.hits!) {
+          await _itemDatabase.create(e);
+        }
+        print("==================================");
+        print("result from api");
+        print("==================================");
+        result = _weatherInfo.hits ?? [];
+      }
+    } else {
+      print("==================================");
+      print("result from database");
+      print("==================================");
+      result =
+          await _itemDatabase.getPagingItems(page: page, pageSize: pageSize) ??
+              [];
+      print("==================================");
+      print("result getPagingItems length :  ${result.length}");
+      print("==================================");
     }
+    // _weatherInfo.hits!.map((e) async{
+    //   await  _itemDatabase.create(e);
+    // });
 
-    Future<GalleryModel> getGalleryItems(
-      {required int page,required int pageSize,required String key}) async {
-
-
-   var _weatherInfo = await _galleryApi.getGalleryInfo(page: page, pageSize: pageSize, key: key);
-    return _weatherInfo;
-    }
-
-
+    return result;
+  }
 
   // User Management : -----------------------------------------------------------------
 
-
   Future<UserModel> createNewAccount({required UserModel newUser}) async {
-
-
     var _user = await _userDatabase.create(newUser);
     return _user;
   }
 
-
-  Future<UserModel?> accountExists({required String email,required String password}) async {
-    var result = await _userDatabase.accountExists(
-      email: email,
-      password: password
-    );
+  Future<UserModel?> accountExists(
+      {required String email, required String password}) async {
+    var result =
+        await _userDatabase.accountExists(email: email, password: password);
     return result;
   }
-
-
 
   // Themes: -----------------------------------------------------------------
   Future<void> changeBrightnessToDark(bool value) =>

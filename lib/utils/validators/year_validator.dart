@@ -6,11 +6,11 @@ import 'base_validator.dart';
 class YearValidator extends BaseValidator {
   @override
   String getMessage(BuildContext? context) {
-    return AppLocalizations.of(context!)!.translate('v_invalid_year');
+    return AppLocalizations.of(context!).translate('v_invalid_year');
   }
 
   @override
   bool validate(String value) {
-    return value != null && value.isNotEmpty && value.length == 4;
+    return value.isNotEmpty && value.length == 4;
   }
 }

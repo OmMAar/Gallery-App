@@ -1,12 +1,13 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nabed_test/common/widgets/horizontal_padding.dart';
 import 'package:nabed_test/constants/app_constants.dart';
 
 class HomeAppBarWidget extends StatelessWidget {
   final String name;
-  const HomeAppBarWidget({required this.name});
+  final String? title;
+  final Widget? image;
+  const HomeAppBarWidget({required this.name,this.title,this.image});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +24,8 @@ class HomeAppBarWidget extends StatelessWidget {
                 child: Center(
                   child: Row(
                     children: [
-                      Image.asset(
+                      image ??
+                          Image.asset(
                         AppAssets.main_logo,
                         width: 40,
                         height: 40,
@@ -32,7 +34,8 @@ class HomeAppBarWidget extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Welcome",
+                          Text(
+                            title ?? "Welcome",
                           style: appTextStyle.middleTSBasic.copyWith(
                             color: AppColors.black,
                           ),),

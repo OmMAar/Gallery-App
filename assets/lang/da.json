@@ -40,5 +40,20 @@
   "v_invalid_year": "Invalid Years",
   "v_min_length_1": "This field should minimum length of",
   "v_min_length_2": "characters",
-  "v_not_match": "There is not match"
+  "v_not_match": "There is not match",
+  "canLoadingText": "Release to load more",
+  "canRefreshText": "Release to refresh",
+  "canTwoLevelText": "Release to enter second floor",
+  "idleLoadingText": "Pull up Load more",
+  "idleRefreshText": "Pull down Refresh",
+  "loadFailedText": "Load Failed",
+  "loadingText": "Loading…",
+  "noMoreText": "No more data",
+  "refreshCompleteText": "Refresh completed",
+  "refreshFailedText": "Refresh failed",
+  "refreshingText": "Refreshing…",
+  "no_data" : "There are no items",
+  "load_more": "Load more",
+  "load_fail": "Load Failed",
+  "pull_up": "Pull up"
 }

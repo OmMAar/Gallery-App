@@ -1,3 +1,4 @@
+import 'package:nabed_test/ui/details/page/item_details_page.dart';
 import 'package:nabed_test/ui/home/pages/home_page.dart';
 import 'package:nabed_test/ui/splash/splash.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class Routes {
   static const String signInPage = '/userManagement/pages/signInPage';
   static const String signUpPage = '/userManagement/pages/signUpPage';
   static const String home = '/home';
+  static const String itemDetailsPage = '/details/page/itemDetailsPage';
 
 
   static final routes = <String, WidgetBuilder>{
@@ -22,6 +24,7 @@ class Routes {
     signInPage: (BuildContext context) => SignInPage(),
     signUpPage: (BuildContext context) => SignUpPage(),
     home: (BuildContext context) => HomeScreen(),
+    itemDetailsPage: (BuildContext context) => ItemDetailsPage()
 
   };
 

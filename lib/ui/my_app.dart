@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nabed_test/blocs/main/root_page_bloc.dart';
 import 'package:nabed_test/constants/app_theme.dart';
 import 'package:nabed_test/constants/strings.dart';
@@ -42,26 +43,31 @@ class MyApp extends StatelessWidget {
         child: Observer(
           name: 'global-observer',
           builder: (context) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: Strings.appName,
-              theme: _themeStore.darkMode ? themeDataDark : themeData,
-              routes: Routes.routes,
-              locale: Locale(_languageStore.locale),
-              supportedLocales: _languageStore.supportedLanguages
-                  .map((language) => Locale(language.locale!, language.code))
-                  .toList(),
-              localizationsDelegates: [
-                // A class which loads the translations from JSON files
-                AppLocalizations.delegate,
-                // Built-in localization of basic text for Material widgets
-                GlobalMaterialLocalizations.delegate,
-                // Built-in localization for text direction LTR/RTL
-                GlobalWidgetsLocalizations.delegate,
-                // Built-in localization of basic text for Cupertino widgets
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              home: SplashScreen(),
+            return ScreenUtilInit(
+                designSize: Size(360, 690),
+                builder: (){
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: Strings.appName,
+                  theme: _themeStore.darkMode ? themeDataDark : themeData,
+                  routes: Routes.routes,
+                  locale: Locale(_languageStore.locale),
+                  supportedLocales: _languageStore.supportedLanguages
+                      .map((language) => Locale(language.locale!, language.code))
+                      .toList(),
+                  localizationsDelegates: [
+                    // A class which loads the translations from JSON files
+                    AppLocalizations.delegate,
+                    // Built-in localization of basic text for Material widgets
+                    GlobalMaterialLocalizations.delegate,
+                    // Built-in localization for text direction LTR/RTL
+                    GlobalWidgetsLocalizations.delegate,
+                    // Built-in localization of basic text for Cupertino widgets
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  home: SplashScreen(),
+                );
+              }
             );
           },
         ),

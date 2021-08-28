@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nabed_test/constants/app_constants.dart';
 import 'package:nabed_test/constants/text_style.dart';
-import 'package:nabed_test/constants/app_assets.dart';
 import 'package:nabed_test/utils/locale/app_localization.dart';
 
 class UnexpectedError extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const UnexpectedError({Key? key, required this.onPressed}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -24,6 +27,20 @@ class UnexpectedError extends StatelessWidget {
                 style: appTextStyle.smallTSBasic,
                 textAlign: TextAlign.center,
               ),
+              FlatButton(
+                onPressed: onPressed,
+                child: Text(
+                  AppLocalizations.of(context).translate('retry'),
+                  style: appTextStyle.smallTSBasic
+                      .copyWith(color: AppColors.white),
+                ),
+                color: AppColors.primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                ),
+              )
             ],
           ),
         ),

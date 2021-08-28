@@ -3,7 +3,60 @@ import 'package:json_annotation/json_annotation.dart';
 part 'gallery_model.g.dart';
 
 
+class ItemFields {
+  static final List<String> values = [
+    /// Add all fields
+    id,
+    mainId,
+    pageURL,
+    type,
+    tags,
+    previewURL,
+    previewWidth,
+    previewHeight,
+    webformatURL,
+    webformatWidth,
+    webformatHeight,
+    largeImageURL,
+    imageWidth,
+    imageHeight,
+    imageSize,
+    views,
+    downloads,
+    collections,
+    likes,
+    comments,
+    userId,
+    user,
+    userImageURL,
+  ];
 
+  static final String id = 'id';
+  static final String mainId = 'mainId';
+  static final String pageURL = 'pageURL';
+  static final String type = 'type';
+  static final String tags = 'tags';
+  static final String previewURL = 'previewURL';
+
+  static final String previewWidth = 'previewWidth';
+  static final String previewHeight = 'previewHeight';
+  static final String webformatURL = 'webformatURL';
+
+  static final String webformatWidth = 'webformatWidth';
+  static final String webformatHeight = 'webformatHeight';
+  static final String largeImageURL = 'largeImageURL';
+  static final String imageWidth = 'imageWidth';
+  static final String imageHeight = 'imageHeight';
+  static final String imageSize = 'imageSize';
+  static final String views = 'views';
+  static final String downloads = 'downloads';
+  static final String collections = 'collections';
+  static final String likes = 'likes';
+  static final String comments = 'comments';
+  static final String userId = 'userId';
+  static final String user = 'user';
+  static final String userImageURL = 'userImageURL';
+}
 
 @JsonSerializable()
 class GalleryModel {

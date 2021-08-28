@@ -11,6 +11,6 @@ class VerificationCodeValidator extends BaseValidator {
 
   @override
   bool validate(String value) {
-    return value != null && value.isNotEmpty && value.length == 5;
+    return value.isNotEmpty && value.length == 5;
   }
 }

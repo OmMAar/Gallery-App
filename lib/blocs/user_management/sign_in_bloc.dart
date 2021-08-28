@@ -6,7 +6,7 @@ import 'package:nabed_test/data/repository.dart';
 import 'package:nabed_test/di/components/service_locator.dart';
 import 'package:nabed_test/models/user/user_model.dart';
 import 'package:nabed_test/utils/database_exception/database_error_util.dart';
-import 'package:nabed_test/utils/dio/dio_error_util.dart';
+import 'package:nabed_test/utils/handel_error/dio_error_util.dart';
 import 'package:sqflite/sqflite.dart';
 
 abstract class SignInState extends Equatable {}

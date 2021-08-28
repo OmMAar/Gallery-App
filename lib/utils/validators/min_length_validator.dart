@@ -14,7 +14,7 @@ class MinLengthValidator extends BaseValidator {
     if (isFromVerificationPage != null && isFromVerificationPage!) return '*';
     return '${AppLocalizations.of(context!).translate('v_min_length_1')} '
         '$minLength '
-        '${AppLocalizations.of(context)!.translate('v_min_length_2')}';
+        '${AppLocalizations.of(context).translate('v_min_length_2')}';
   }
 
   @override

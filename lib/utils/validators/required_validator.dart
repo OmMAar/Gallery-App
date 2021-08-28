@@ -15,6 +15,6 @@ class RequiredValidator extends BaseValidator {
 
   @override
   bool validate(String value) {
-    return value != null && value.isNotEmpty;
+    return  value.trim().isNotEmpty;
   }
 }

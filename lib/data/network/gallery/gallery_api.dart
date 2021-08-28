@@ -1,10 +1,6 @@
 import 'dart:async';
-
-import 'package:dio/dio.dart';
 import 'package:nabed_test/data/network/constants/endpoints.dart';
 import 'package:nabed_test/data/network/dio_client.dart';
-import 'package:nabed_test/data/network/rest_client.dart';
-import 'package:nabed_test/models/dashboard/dashboard_model.dart';
 import 'package:nabed_test/models/gallery/gallery_model.dart';
 
 class GalleryApi {

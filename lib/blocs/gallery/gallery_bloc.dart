@@ -2,12 +2,13 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:nabed_test/data/network/constants/endpoints.dart';
 import 'package:nabed_test/data/repository.dart';
 import 'package:nabed_test/di/components/service_locator.dart';
-import 'package:nabed_test/models/dashboard/dashboard_model.dart';
 import 'package:nabed_test/models/gallery/gallery_model.dart';
-import 'package:nabed_test/utils/dio/dio_error_util.dart';
-
+import 'package:nabed_test/utils/database_exception/database_error_util.dart';
+import 'package:nabed_test/utils/handel_error/dio_error_util.dart';
+import 'package:sqflite/sqflite.dart';
 
 abstract class GalleryState extends Equatable {}
 
@@ -28,10 +29,11 @@ class GalleryLoading extends GalleryState {
 }
 
 class GallerySuccess extends GalleryState {
- final List<HitsModel> result;
- final bool noMoreData;
+  final List<HitsModel> result;
+  final bool noMoreData;
 
-   GallerySuccess({required this.result,this.noMoreData = false});
+  GallerySuccess({required this.result, this.noMoreData = false});
+
   @override
   List<Object> get props => [result];
 
@@ -55,15 +57,12 @@ class GalleryFailure extends GalleryState {
   String toString() => 'GalleryFailure { error: $errorMessage }';
 }
 
-// abstract class GalleryEvent extends Equatable {}
 
 class GalleryEvent extends Equatable {
-
-  bool loadMore;
+  final bool loadMore;
   final CancelToken cancelToken;
 
-  GalleryEvent({this.loadMore = false,required this.cancelToken});
-
+  GalleryEvent({this.loadMore = false, required this.cancelToken});
 
   @override
   List<Object> get props => [];
@@ -73,43 +72,77 @@ class GalleryEvent extends Equatable {
 }
 
 class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
+  List<HitsModel> hits = [];
+  int page = 1;
+
   GalleryBloc() : super(GalleryUninitialized());
-
-
 
   @override
   Stream<GalleryState> mapEventToState(GalleryEvent event) async* {
-
-    List<HitsModel> hits = [];
-    int page = 0;
-
-
     // repository instance
     Repository _repository = getIt<Repository>();
 
     try {
-
       if (event.loadMore) {
-        page++;
+        this.page++;
         print('event.loadMore');
-      }
-
-      else {
-        page = 0;
+      } else {
+        page = 1;
         yield GalleryLoading();
       }
 
-      final future = await _repository.getGalleryItems(page: page, pageSize: 10, key: '23086641-04f8751d38ce8bd30a872d6e2');
+      final galleryResult = await _repository.getGalleryItems(
+          page: page, pageSize: Endpoints.pageSize, key: Endpoints.apiKey);
 
-      yield GallerySuccess(result: future.hits!);
+      if (galleryResult.isNotEmpty) {
+        if (event.loadMore) {
+          List<HitsModel> hitsListTemp = List.from(this.hits);
+          hitsListTemp.addAll(galleryResult);
+          await Future.delayed(Duration(seconds: 3), () {});
+          this.hits = hitsListTemp;
+        }
+        else {
+          await Future.delayed(Duration(seconds: 1), () {});
+          this.hits = galleryResult;
+        }
+        yield GallerySuccess(result: this.hits);
+      } else {
+        if (event.loadMore) {
+          page --;
+        }
+        if (this.hits.isEmpty) {
+          yield GalleryFailure(errorMessage: "There are no data",callback: () {
+            this.add(event);
+          },);
+        } else {
+
+          yield GallerySuccess(result: this.hits);
+        }
+      }
     } catch (err) {
       print('Caught error: $err');
-      yield GalleryFailure(
-        errorMessage: DioErrorUtil.handleError(err as DioError),
-        callback: () {
-          this.add(event);
-        },
-      );
+      if(err is DioError){
+        yield GalleryFailure(
+          errorMessage: DioErrorUtil.handleError(err),
+          callback: () {
+            this.add(event);
+          },
+        );
+      }else if(err is DatabaseException){
+        yield GalleryFailure(
+          errorMessage: DataBaseErrorUtil.handleError(err),
+          callback: () {
+            this.add(event);
+          },
+        );
+      }else {
+        yield GalleryFailure(
+          errorMessage: err.toString(),
+          callback: () {
+            this.add(event);
+          },
+        );
+      }
     }
   }
 }

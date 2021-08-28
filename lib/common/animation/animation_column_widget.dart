@@ -3,6 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class AnimationColumnWidget extends StatelessWidget {
   final Duration duration;
+  final Duration delay;
   final Curve curve;
   final double? verticalOffset;
   final double? horizontalOffset;
@@ -15,6 +16,7 @@ class AnimationColumnWidget extends StatelessWidget {
   const AnimationColumnWidget(
       {Key? key,
       this.duration = const Duration(milliseconds: 225),
+      this.delay = const Duration(milliseconds: 225),
       this.horizontalOffset = 0.0,
       required this.children,
       this.curve = Curves.ease,
@@ -33,6 +35,7 @@ class AnimationColumnWidget extends StatelessWidget {
         crossAxisAlignment: crossAxisAlignment!,
         children: AnimationConfiguration.toStaggeredList(
           duration: duration,
+          delay: delay,
           childAnimationBuilder: (widget) => SlideAnimation(
             horizontalOffset: horizontalOffset,
             verticalOffset:  verticalOffset,
